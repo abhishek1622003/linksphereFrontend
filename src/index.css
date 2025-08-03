@@ -118,3 +118,43 @@
 .dark-bg .bg-linkedin-bg {
   background-color: var(--linkedin-bg-dark);
 }
+
+/* Ensure buttons are always visible - Emergency fix */
+.btn-primary, 
+button[type="submit"], 
+button.bg-blue-600,
+.bg-blue-600 {
+  background-color: #2563eb !important;
+  color: white !important;
+  border: 1px solid #2563eb !important;
+  padding: 0.625rem 1.25rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+button[type="submit"]:hover,
+.bg-blue-600:hover {
+  background-color: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
+button[type="submit"]:disabled,
+.bg-blue-600:disabled {
+  background-color: #9ca3af !important;
+  border-color: #9ca3af !important;
+  cursor: not-allowed !important;
+}
+
+/* Ensure link buttons are visible */
+.text-blue-600 {
+  color: #2563eb !important;
+}
+
+.text-blue-600:hover {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
+}
