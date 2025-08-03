@@ -34,6 +34,12 @@ export function useAuth() {
       }
       const userData = await res.json();
       console.log("✅ User data received:", userData);
+      console.log("👤 User names:", {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        bio: userData.bio
+      });
       return userData;
     },
     enabled: !!firebaseUser,

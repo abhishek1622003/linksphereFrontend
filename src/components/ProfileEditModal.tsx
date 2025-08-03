@@ -40,8 +40,11 @@ export default function ProfileEditModal({ isOpen, onClose }: ProfileEditModalPr
       console.log("✅ Profile update response:", response.status);
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (updatedUser) => {
+      console.log("✅ Profile update successful:", updatedUser);
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      // Force refetch user data
+      queryClient.refetchQueries({ queryKey: ["/api/auth/user"] });
       toast({
         title: "Success",
         description: "Your profile has been updated!",
