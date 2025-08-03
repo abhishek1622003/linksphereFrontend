@@ -1,33 +1,22 @@
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User, getIdToken } from "firebase/auth";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { auth } from "../lib/firebase";
 
 export function useAuth() {
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => {
       setFirebaseUser(user);
-      setIsLoading(false);
+      setAuthLoading(false);
     });
     return () => unsub();
   }, []);
 
-  // Temporarily disable backend API calls - use Firebase user data directly
-  const user = firebaseUser ? {
-    id: firebaseUser.uid,
-    email: firebaseUser.email || "",
-    name: firebaseUser.displayName || "User",
-    profileImageUrl: firebaseUser.photoURL || "",
-    bio: "",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  } : null;
-
-  /* 
-  // TODO: Enable this when backend is deployed
-  const { data: user, isLoading } = useQuery({
+  // Backend API call to get/create user profile
+  const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["/api/auth/user", firebaseUser?.uid],
     queryFn: async () => {
       if (!firebaseUser) return null;
@@ -41,11 +30,10 @@ export function useAuth() {
     enabled: !!firebaseUser,
     retry: false,
   });
-  */
 
   return {
     user,
-    isLoading,
+    isLoading: authLoading || userLoading,
     isAuthenticated: !!user,
     firebaseUser,
   };
