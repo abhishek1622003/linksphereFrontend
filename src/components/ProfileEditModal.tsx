@@ -42,9 +42,22 @@ export default function ProfileEditModal({ isOpen, onClose }: ProfileEditModalPr
     },
     onSuccess: (updatedUser) => {
       console.log("✅ Profile update successful:", updatedUser);
+      console.log("🔄 Invalidating user queries...");
+      
+      // Get current user ID for proper query invalidation
+      if (user?.id) {
+        console.log("🔄 Invalidating queries for user:", user.id);
+        queryClient.invalidateQueries({ queryKey: ["/api/auth/user", user.id] });
+        queryClient.invalidateQueries({ queryKey: ["/api/users", user.id] });
+        
+        // Force refetch with correct key
+        queryClient.refetchQueries({ queryKey: ["/api/auth/user", user.id] });
+      }
+      
+      // Also invalidate general patterns
       queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
-      // Force refetch user data
-      queryClient.refetchQueries({ queryKey: ["/api/auth/user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/users"] });
+      
       toast({
         title: "Success",
         description: "Your profile has been updated!",

@@ -66,6 +66,13 @@ export default function CreatePost() {
 
   if (!user) return null;
 
+  console.log("🎨 CreatePost - Current user data:", {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email
+  });
+
   const userInitials = user.firstName && user.lastName
     ? `${user.firstName[0]}${user.lastName[0]}`
     : 'AU';
