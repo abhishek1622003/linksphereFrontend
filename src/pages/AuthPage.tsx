@@ -1,5 +1,6 @@
 
 
+// LinkSphere Auth Page - v2.0 with improved UX
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/Logo";
