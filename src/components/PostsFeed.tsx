@@ -90,9 +90,11 @@ export default function PostsFeed() {
   return (
     <div className="space-y-4">
       {posts.map((post) => {
-        const authorName = post.author?.name || 'Anonymous User';
-        const authorInitials = post.author?.name 
-          ? post.author.name.split(' ').map(n => n[0]).join('').toUpperCase()
+        const authorName = post.author 
+          ? `${post.author.firstName || ''} ${post.author.lastName || ''}`.trim() || 'Anonymous User'
+          : 'Anonymous User';
+        const authorInitials = post.author?.firstName && post.author?.lastName
+          ? `${post.author.firstName[0]}${post.author.lastName[0]}`.toUpperCase()
           : 'AU';
 
         return (
