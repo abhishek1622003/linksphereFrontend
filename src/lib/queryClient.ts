@@ -11,16 +11,22 @@ async function throwIfResNotOk(res: Response) {
 
 export async function apiRequest(
   method: string,
-  url: string,
+  endpoint: string,
   data?: unknown
 ): Promise<Response> {
   let token = "";
   if (auth.currentUser) {
     token = await getIdToken(auth.currentUser);
   }
+  
+  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
+  
   const headers: Record<string, string> = {};
   if (data) headers["Content-Type"] = "application/json";
   if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  console.log(`🔗 API Request: ${method} ${url}`);
 
   const res = await fetch(url, {
     method,
@@ -39,7 +45,13 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const res = await fetch(queryKey.join("/") as string, {
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const endpoint = queryKey.join("/");
+    const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`;
+    
+    console.log(`🔗 Query: ${url}`);
+    
+    const res = await fetch(url, {
       credentials: "include",
     });
 
