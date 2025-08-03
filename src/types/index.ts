@@ -4,7 +4,8 @@ import { z } from "zod";
 export interface User {
   id: string;
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   profileImageUrl?: string | null;
   bio?: string | null;
   createdAt?: Date | null;
