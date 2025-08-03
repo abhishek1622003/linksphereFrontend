@@ -57,7 +57,20 @@ export const getQueryFn: <T>(options: {
     
     console.log(`🔗 Query: ${url}`);
     
+    // Add auth header for queries that need it
+    const headers: Record<string, string> = {};
+    if (auth.currentUser && (endpoint.includes('/auth/') || endpoint.includes('/profile'))) {
+      try {
+        const token = await getIdToken(auth.currentUser);
+        headers["Authorization"] = `Bearer ${token}`;
+        console.log("🔑 Added auth header to query");
+      } catch (error) {
+        console.error("❌ Failed to get auth token for query:", error);
+      }
+    }
+    
     const res = await fetch(url, {
+      headers
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
