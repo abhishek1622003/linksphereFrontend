@@ -97,7 +97,8 @@ export default function ProfileEditModal({ isOpen, onClose }: ProfileEditModalPr
     }
 
     updateProfileMutation.mutate({
-      name: `${firstName.trim()} ${lastName.trim()}`,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
       bio: bio.trim() || undefined,
     });
   };
