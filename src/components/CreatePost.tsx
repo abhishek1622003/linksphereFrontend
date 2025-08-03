@@ -17,7 +17,10 @@ export default function CreatePost() {
 
   const createPostMutation = useMutation({
     mutationFn: async (postData: CreatePostData) => {
-      await apiRequest("POST", "/api/posts", postData);
+      console.log("🔗 Creating post with data:", postData);
+      const response = await apiRequest("POST", "/api/posts", postData);
+      console.log("✅ Post creation response:", response.status);
+      return response;
     },
     onSuccess: () => {
       setContent("");
