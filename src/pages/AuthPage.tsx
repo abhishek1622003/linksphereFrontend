@@ -18,13 +18,18 @@ export default function AuthPage() {
     setLoading(true);
     setError("");
     try {
+      console.log("🔐 Attempting authentication...", { email, isSignUp });
       if (isSignUp) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        console.log("✅ Firebase signup successful", result.user.uid);
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        console.log("✅ Firebase signin successful", result.user.uid);
       }
+      console.log("🔄 Redirecting to home...");
       window.location.href = "/";
     } catch (err: any) {
+      console.error("❌ Authentication error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
