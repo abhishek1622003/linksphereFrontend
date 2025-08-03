@@ -16,7 +16,11 @@ export async function apiRequest(
 ): Promise<Response> {
   let token = "";
   if (auth.currentUser) {
+    console.log("🔑 Getting Firebase token for user:", auth.currentUser.uid);
     token = await getIdToken(auth.currentUser);
+    console.log("✅ Got Firebase token:", token ? "present" : "missing");
+  } else {
+    console.log("❌ No authenticated user found");
   }
   
   const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -27,6 +31,8 @@ export async function apiRequest(
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
   console.log(`🔗 API Request: ${method} ${url}`);
+  console.log("📋 Headers:", headers);
+  if (data) console.log("📦 Data:", data);
 
   const res = await fetch(url, {
     method,
@@ -35,6 +41,7 @@ export async function apiRequest(
     credentials: "include",
   });
 
+  console.log(`📈 Response: ${res.status} ${res.statusText}`);
   await throwIfResNotOk(res);
   return res;
 }
